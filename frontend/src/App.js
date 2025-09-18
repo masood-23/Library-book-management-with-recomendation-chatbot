@@ -1,37 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { fetchBooks } from './components/api';
-import BookList from './components/BookList';
-import Chatbot from './components/Chatbot';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Catalog from "./pages/Catalog";
+import Login from "./pages/Login";
 
 export default function App() {
-  const [books, setBooks] = useState([]);
-
-  async function load() {
-    try {
-      const data = await fetchBooks();
-      setBooks(data);
-    } catch (err) {
-      console.error('Failed to fetch books', err);
-    }
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
   return (
-    <div className="container">
-      <h1>MERN Library</h1>
-      <div className="grid">
-        <div className="catalog">
-          <h2>Catalog</h2>
-          <BookList books={books} reload={load} />
-        </div>
-        <div className="chat">
-          <h2>Recommendation Chatbot</h2>
-          <Chatbot />
-        </div>
+    <Router>
+      <Navbar />
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }

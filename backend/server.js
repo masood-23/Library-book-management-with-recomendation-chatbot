@@ -1,27 +1,30 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const connectDB = require('./config/db');
-const booksRouter = require('./routes/books');
-const recommendRouter = require('./routes/recommend');
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import connectDB from "./config/db.js";
 
+import bookRoutes from "./routes/bookRoutes.js";
+import books from "./routes/books.js";
+import recommend from "./routes/recommend.js";
+import chatbotRoutes from "./routes/chatbotRoutes.js";
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-
-
-const PORT = process.env.PORT || 5000;
-
-
+dotenv.config();
 connectDB();
 
+const app = express();
 
-app.use('/api/books', booksRouter);
-app.use('/api/recommend', recommendRouter);
+app.use(cors());
+app.use(express.json());
 
+// Routes
+app.use("/api/books", bookRoutes);
+app.use("/api/books-alt", books); // alias
+app.use("/api/recommend", recommend);
+app.use("/api/chatbot", chatbotRoutes);
 
-app.get('/', (req, res) => res.json({ ok: true, msg: 'MERN Library Backend' }));
+app.get("/", (req, res) => {
+  res.send("📚 Book + Chatbot API running");
+});
 
-
-app.listen(PORT, () => console.log('Server listening on port', PORT));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

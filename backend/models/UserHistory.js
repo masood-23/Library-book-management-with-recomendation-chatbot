@@ -1,10 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
+const historySchema = new mongoose.Schema(
+  {
+    query: { type: String, required: true },
+    response: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
-const UserHistorySchema = new mongoose.Schema({
-query: String,
-createdAt: { type: Date, default: Date.now }
-});
+const UserHistory = mongoose.model("UserHistory", historySchema);
 
-
-module.exports = mongoose.model('UserHistory', UserHistorySchema);
+export default UserHistory;
