@@ -6,6 +6,7 @@ const bookSchema = new mongoose.Schema(
     author: { type: String },
     genre: { type: String },
     year: { type: Number },
+    copies: { type: Number, default: 1, min: 0 },
   },
   { timestamps: true }
 );
